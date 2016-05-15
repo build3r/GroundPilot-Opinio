@@ -10,20 +10,21 @@ import com.quickblox.core.QBSettings;
  */
 public class MApp extends Application
 {
-    public static boolean who = true;
+
     public static final boolean CUSTOMER =true;
+    public static final boolean PILOT =false;
     public static Context ctx;
     @Override
     public void onCreate() {
         super.onCreate();
         ctx = this;
-        QBSettings.getInstance().init(getApplicationContext(), Constants.APP_ID, Constants.AUTH_KEY, Constants.AUTH_SECRET);
+        QBSettings.getInstance().init(this, Constants.APP_ID, Constants.AUTH_KEY, Constants.AUTH_SECRET);
         QBSettings.getInstance().setAccountKey(Constants.ACCOUNT_KEY);
-        who = CUSTOMER;
-        //who = !CUSTOMER; //Means Pilot
+        /*//who = CUSTOMER;
+        who = PILOT; //Means Pilot*/
     }
     public static boolean whoAmI()
     {
-        return who;
+        return CUSTOMER;
     }
 }

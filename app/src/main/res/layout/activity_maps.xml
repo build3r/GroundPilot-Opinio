@@ -122,19 +122,19 @@
                         android:layout_width="fill_parent"
                         android:layout_height="match_parent" >
 
-                        <ImageView
+                        <ImageButton
                             android:layout_width="52dp"
                             android:layout_height="52dp"
-                            android:src="@drawable/reset"
+                            android:background="@drawable/reset"
                             android:layout_margin="10dp"
                             android:id="@+id/reset_id"
                             android:layout_marginLeft="15dp"
                             android:layout_gravity="left|bottom" />
 
-                        <ImageView
+                        <ImageButton
                             android:layout_width="52dp"
                             android:layout_height="52dp"
-                            android:src="@drawable/undo"
+                            android:background="@drawable/undo"
                             android:layout_margin="10dp"
                             android:id="@+id/undo_id"
                             android:layout_marginLeft="15dp"
@@ -149,8 +149,9 @@
                             android:textOn="Draw"
                             android:layout_margin="10dp"
                             android:padding="5dp"
-                            android:background="@drawable/style_toggle_btn"
                             android:layout_gravity="center_horizontal|bottom" />
+
+                        <!--android:background="@drawable/style_toggle_btn"-->
                     </FrameLayout>
 
                 </FrameLayout>
@@ -196,9 +197,10 @@
             android:layout_weight="1.5"
             android:layout_gravity="center"
             android:text="SEND"
-            android:background="@drawable/btn_click_style"
             android:textColor="#ffffff"
             android:layout_margin="8dp" />
+
+        <!--android:background="@drawable/btn_click_style"-->
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"

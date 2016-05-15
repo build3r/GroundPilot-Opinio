@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.model.QBSession;
 import com.quickblox.chat.QBChatService;
@@ -23,11 +21,11 @@ import com.quickblox.users.model.QBUser;
 
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.chat.Chat;
-import org.jivesoftware.smack.chat.ChatManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import builder.groundcontrol.MapsActivity;
 import builder.groundcontrol.customerDraw;
 import builder.groundcontrol.gsonUtil;
 
@@ -45,18 +43,19 @@ public class Worker {
     int i =0;
     String tag = "messaging,worker";
     private static Worker w;
-    public static Worker getWorker()
+    MapsActivity activity;
+    public static Worker getWorker(MapsActivity activity)
     {
        if(w==null)
-           w=new Worker();
+           w=new Worker(activity);
         return w;
 
 
     }
 
-    private Worker()
+    private Worker(MapsActivity activity)
     {
-
+        this.activity = activity;
     }
 
     public void loginAsPilot()
@@ -88,13 +87,17 @@ public class Worker {
             if(MApp.whoAmI()==MApp.CUSTOMER)
             {
                 // customer logic
-               customerDraw d = (customerDraw) gsonUtil.tojava(chatMessage.getBody(), customerDraw.class);
 
+                LatLng l = (LatLng) gsonUtil.tojava(chatMessage.getBody().toString(), LatLng.class);
+
+                activity.updatePilotLocation(l);
             }
             else
             {
                 // pilot logic
-                LatLng l = (LatLng) gsonUtil.tojava(chatMessage.getBody(), LatLng.class);
+
+                customerDraw d = (customerDraw) gsonUtil.tojava(chatMessage.getBody(), customerDraw.class);
+                activity.Draw_MapOnPilot(d.ltlng);
             }
         }
 
@@ -115,32 +118,39 @@ public class Worker {
     };
 
     public void sendMessage(Integer opponentId,String msg) {
-        privateChatManager.createDialog(opponentId, new QBEntityCallback<QBDialog>() {
-            @Override
-            public void onSuccess(QBDialog dialog, Bundle args) {
-                Log.d(tag, "Successful Dialog Created");
-            }
-
-            @Override
-            public void onError(QBResponseException errors) {
-                Log.d(tag, "Dialog Creating Dialog");
-                errors.printStackTrace();
-            }
-        });
-
-        try
-
+        if(privateChatManager!=null)
         {
-            QBChatMessage chatMessage = new QBChatMessage();
-            chatMessage.setBody(msg);
-            //chatMessage.setProperty("save_to_history", "1"); // Save a message to history
+            privateChatManager.createDialog(opponentId, new QBEntityCallback<QBDialog>()
+            {
+                @Override
+                public void onSuccess(QBDialog dialog, Bundle args)
+                {
+                    Log.d(tag, "Successful Dialog Created");
+                }
 
-            QBPrivateChat privateChat = privateChatManager.getChat(opponentId);
-            if (privateChat == null) {
-                privateChat = privateChatManager.createChat(opponentId, privateChatMessageListener);
+                @Override
+                public void onError(QBResponseException errors)
+                {
+                    Log.d(tag, "Dialog Creating Dialog");
+                    errors.printStackTrace();
+                }
+            });
+
+            try
+
+            {
+                QBChatMessage chatMessage = new QBChatMessage();
+                chatMessage.setBody(msg);
+                //chatMessage.setProperty("save_to_history", "1"); // Save a message to history
+
+                QBPrivateChat privateChat = privateChatManager.getChat(opponentId);
+                if (privateChat == null)
+                {
+                    privateChat = privateChatManager.createChat(opponentId, privateChatMessageListener);
+                }
+                privateChat.sendMessage(chatMessage);
+                Log.d(tag,"Locations Updates Chat Message sent");
             }
-            privateChat.sendMessage(chatMessage);
-        }
 /*
     catch(XMPPException e)
 
@@ -148,11 +158,12 @@ public class Worker {
 
     }
 */ catch (
-                SmackException.NotConnectedException e
-                )
+                    SmackException.NotConnectedException e
+                    )
 
-        {
-            e.printStackTrace();
+            {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -167,6 +178,7 @@ public class Worker {
                 user.setId(qbSession.getUserId());
 
                 Log.d(tag, "Successfully Logged In");
+                chatService = QBChatService.getInstance();
                 chatService.login(user, new QBEntityCallback() {
 
                     @Override
