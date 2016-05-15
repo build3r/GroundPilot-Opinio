@@ -3,7 +3,9 @@
 
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:baselineAligned="true"
+    android:background="#ffffff">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,11 +21,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
 
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="#ffffff">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
+                    android:id="@+id/name_id"
                     android:textSize="20sp"
                     android:text="Rajiv Shivashankar "
                     android:textColor="#000000"
@@ -33,13 +37,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="#ffffff"
+                android:layout_weight="47.89">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginTop="6dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginRight="16dp"
                     android:gravity="center"
 
                     android:orientation="horizontal">
@@ -57,6 +64,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="1dp"
                         android:layout_gravity="center"
+                        android:id="@+id/mobile_no_id"
                         android:text="9537374896"
                         android:textColor="#000000" />
                 </LinearLayout>
@@ -65,7 +73,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginTop="6dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginBottom="3dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -80,7 +89,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="KA 04 C 4392"
-                        android:id="@+id/textView"
+                        android:id="@+id/vehicle_no_id"
                         android:layout_gravity="center"
                         android:textColor="#000000" />
                 </LinearLayout>
@@ -96,8 +105,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="440dp"
-                android:layout_weight="3">
+                android:layout_height="445dp"
+                android:layout_weight="34.66">
                 <FrameLayout
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" >
@@ -111,24 +120,48 @@
                     <FrameLayout
                         android:id="@+id/fram_map"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" >
+                        android:layout_height="match_parent" >
 
-                        <Button
+                        <ImageView
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
+                            android:src="@drawable/reset"
+                            android:layout_margin="10dp"
+                            android:id="@+id/reset_id"
+                            android:layout_marginLeft="15dp"
+                            android:layout_gravity="left|bottom" />
+
+                        <ImageView
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
+                            android:src="@drawable/undo"
+                            android:layout_margin="10dp"
+                            android:id="@+id/undo_id"
+                            android:layout_marginLeft="15dp"
+                            android:layout_gravity="right|bottom" />
+
+                        <ToggleButton
                             android:id="@+id/btn_draw_State"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Free Draw" />
+                            android:textColor="#ffffff"
+                            android:textOff="Draw"
+                            android:textOn="Draw"
+                            android:layout_margin="10dp"
+                            android:padding="5dp"
+                            android:background="@drawable/style_toggle_btn"
+                            android:layout_gravity="center_horizontal|bottom" />
                     </FrameLayout>
 
                 </FrameLayout>
             </LinearLayout>
         </LinearLayout>
         <builder.groundcontrol.RoundedImageView
-            android:id="@+id/imageView"
+            android:id="@+id/imageView_id"
             android:layout_marginTop="35dp"
 
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/opinio_ground_pilot1" />
     </FrameLayout>
@@ -145,25 +178,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_weight="1"
+        android:layout_weight="2.17"
 
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="#ffffff">
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
+            android:id="@+id/call_id"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:src="@drawable/phone_call_icon"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/send_btn_id"
             android:layout_weight="1.5"
             android:layout_gravity="center"
             android:text="SEND"
-            />
+            android:background="@drawable/btn_click_style"
+            android:textColor="#ffffff"
+            android:layout_margin="8dp" />
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:id="@+id/share_id"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:src="@drawable/share"/>
