@@ -21,6 +21,10 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 
+import builder.groundcontrol.messaging.MApp;
+import builder.groundcontrol.messaging.Utils;
+import builder.groundcontrol.messaging.Worker;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 {
 
@@ -36,6 +40,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        Worker w = Worker.getWorker();
+        if(MApp.whoAmI()==MApp.CUSTOMER)
+        {
+
+            w.loginAsCustomer();
+        }
+        else
+        {
+            w.loginAsPilot();
+        }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);

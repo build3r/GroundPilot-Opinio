@@ -3,6 +3,9 @@ package builder.groundcontrol.messaging;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.model.QBSession;
 import com.quickblox.chat.QBChatService;
@@ -20,9 +23,13 @@ import com.quickblox.users.model.QBUser;
 
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.chat.Chat;
+import org.jivesoftware.smack.chat.ChatManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import builder.groundcontrol.customerDraw;
+import builder.groundcontrol.gsonUtil;
 
 /**
  * Created by dpallagolla on 5/15/2016.
@@ -37,24 +44,37 @@ public class Worker {
     QBPrivateChatManager privateChatManager;
     int i =0;
     String tag = "messaging,worker";
+    private static Worker w;
+    public static Worker getWorker()
+    {
+       if(w==null)
+           w=new Worker();
+        return w;
 
 
-    void loginAsPilot()
+    }
+
+    private Worker()
+    {
+
+    }
+
+    public void loginAsPilot()
     {
         login("Raghu","17291729");
     }
 
-    void loginAsCustomer()
+    public void loginAsCustomer()
     {
         login("Customer1","31423142");
     }
 
-    void sendMessageToCustomer(String msg)
+    public void sendMessageToCustomer(String msg)
     {
         sendMessage(12677424,msg);
     }
 
-    void sendMessageToPilot(String msg)
+    public void sendMessageToPilot(String msg)
     {
         sendMessage(12677400,msg);
     }
@@ -65,6 +85,17 @@ public class Worker {
         public void processMessage(QBPrivateChat privateChat, final QBChatMessage chatMessage) {
 
             Log.d(tag, "Chat Listener : " + chatMessage.getBody().toString());
+            if(MApp.whoAmI()==MApp.CUSTOMER)
+            {
+                // customer logic
+               customerDraw d = (customerDraw) gsonUtil.tojava(chatMessage.getBody(), customerDraw.class);
+
+            }
+            else
+            {
+                // pilot logic
+                LatLng l = (LatLng) gsonUtil.tojava(chatMessage.getBody(), LatLng.class);
+            }
         }
 
         @Override
@@ -83,7 +114,7 @@ public class Worker {
         }
     };
 
-    void sendMessage(Integer opponentId,String msg) {
+    public void sendMessage(Integer opponentId,String msg) {
         privateChatManager.createDialog(opponentId, new QBEntityCallback<QBDialog>() {
             @Override
             public void onSuccess(QBDialog dialog, Bundle args) {
@@ -126,7 +157,7 @@ public class Worker {
 
     }
 
-    void login(String userName, String pass) {
+    public void login(String userName, String pass) {
         final QBUser user = new QBUser(userName, pass);
         QBAuth.createSession(user, new QBEntityCallback<QBSession>() {
 
